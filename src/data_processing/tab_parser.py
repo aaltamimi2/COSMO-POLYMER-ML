@@ -214,6 +214,19 @@ def extract_common_columns(df: pd.DataFrame, method_type: str) -> pd.DataFrame:
     df_out = df[list(existing_cols.keys())].copy()
     df_out = df_out.rename(columns=existing_cols)
 
+    # Convert numeric columns to proper types
+    numeric_cols = ['log10_x', 'log10_S', 'w', 'mu_self', 'mu_solv',
+                    'Solvent_density', 'Solvent_MolWeight', 'Temperature_K']
+
+    for col in numeric_cols:
+        if col in df_out.columns:
+            df_out[col] = pd.to_numeric(df_out[col], errors='coerce')
+
+    # Drop rows with missing critical values
+    critical_cols = ['log10_x', 'Solvent', 'Temperature_K']
+    available_critical = [c for c in critical_cols if c in df_out.columns]
+    df_out = df_out.dropna(subset=available_critical)
+
     # Add chemical potential difference
     if 'mu_self' in df_out.columns and 'mu_solv' in df_out.columns:
         df_out['delta_mu'] = df_out['mu_solv'] - df_out['mu_self']

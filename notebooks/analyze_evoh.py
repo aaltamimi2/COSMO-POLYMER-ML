@@ -12,7 +12,8 @@ from data_processing.process_tab_files import process_and_merge_data, print_data
 from visualization.comparison_plots import plot_all_variables
 
 
-def main(ref_tab_file: str, sle_tab_file: str, polymer_name: str = 'EVOH'):
+def main(ref_tab_file: str, sle_tab_file: str, polymer_name: str = 'EVOH',
+         common_solvents_file: str = None):
     """
     Complete analysis pipeline for comparing REF and SLE methods
 
@@ -24,6 +25,8 @@ def main(ref_tab_file: str, sle_tab_file: str, polymer_name: str = 'EVOH'):
         Path to SLE method tab file
     polymer_name : str
         Name of polymer (for file naming)
+    common_solvents_file : str, optional
+        Path to text file with common solvents list (one per line)
     """
 
     print("="*80)
@@ -43,7 +46,8 @@ def main(ref_tab_file: str, sle_tab_file: str, polymer_name: str = 'EVOH'):
     ref_df, sle_df, merged_df = process_and_merge_data(
         ref_tab_file,
         sle_tab_file,
-        output_dir=str(processed_dir)
+        output_dir=str(processed_dir),
+        common_solvents_file=common_solvents_file
     )
 
     # Print summaries
@@ -77,13 +81,15 @@ def main(ref_tab_file: str, sle_tab_file: str, polymer_name: str = 'EVOH'):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python analyze_evoh.py <ref_tab_file> <sle_tab_file>")
+    if len(sys.argv) < 3 or len(sys.argv) > 4:
+        print("Usage: python analyze_evoh.py <ref_tab_file> <sle_tab_file> [common_solvents_file]")
         print("\nExample:")
         print("  python analyze_evoh.py ../data/raw/EVOH-REF.tab ../data/raw/EVOH-SLE.tab")
+        print("  python analyze_evoh.py ../data/raw/EVOH-REF.tab ../data/raw/EVOH-SLE.tab ../data/raw/common_solvents.txt")
         sys.exit(1)
 
     ref_file = sys.argv[1]
     sle_file = sys.argv[2]
+    common_solvents = sys.argv[3] if len(sys.argv) == 4 else None
 
-    main(ref_file, sle_file, polymer_name='EVOH')
+    main(ref_file, sle_file, polymer_name='EVOH', common_solvents_file=common_solvents)

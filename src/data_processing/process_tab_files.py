@@ -4,14 +4,33 @@ Process COSMO-therm tab files and generate cleaned CSV files
 import pandas as pd
 import numpy as np
 from pathlib import Path
-from typing import Optional, Tuple
+from typing import Optional, Tuple, List
 from .tab_parser import parse_tab_file, extract_common_columns
+
+
+def load_solvent_list(filepath: str) -> List[str]:
+    """
+    Load a list of solvents from a text file (one solvent per line)
+
+    Parameters:
+    -----------
+    filepath : str
+        Path to text file with solvent names
+
+    Returns:
+    --------
+    List of solvent names
+    """
+    with open(filepath, 'r') as f:
+        solvents = [line.strip() for line in f if line.strip()]
+    return solvents
 
 
 def process_and_merge_data(
     ref_filepath: str,
     sle_filepath: str,
-    output_dir: Optional[str] = None
+    output_dir: Optional[str] = None,
+    common_solvents_file: Optional[str] = None
 ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """
     Process REF and SLE tab files and create matched datasets
@@ -24,6 +43,9 @@ def process_and_merge_data(
         Path to SLE method tab file
     output_dir : str, optional
         Directory to save output CSV files
+    common_solvents_file : str, optional
+        Path to text file with list of common solvents (one per line)
+        If provided, REF data will be filtered to only these solvents
 
     Returns:
     --------
@@ -42,10 +64,20 @@ def process_and_merge_data(
     # Extract common columns
     print("\nExtracting and standardizing columns...")
     ref_df = extract_common_columns(ref_raw, 'REF')
+    print(f"  REF after cleanup: {len(ref_df)} valid data points")
     sle_df = extract_common_columns(sle_raw, 'SLE')
+    print(f"  SLE after cleanup: {len(sle_df)} valid data points")
+
+    # Filter REF by common solvents list if provided
+    if common_solvents_file:
+        print(f"\nFiltering REF by common solvents list: {common_solvents_file}")
+        common_solvents = load_solvent_list(common_solvents_file)
+        print(f"  Loaded {len(common_solvents)} common solvents")
+        ref_df = ref_df[ref_df['Solvent'].isin(common_solvents)].copy()
+        print(f"  REF after solvent filter: {len(ref_df)} data points")
 
     # Filter REF data to match SLE solvents and temperature range
-    print("\nFiltering REF data to match SLE conditions...")
+    print("\nFiltering to match solvents present in BOTH datasets...")
     sle_solvents = set(sle_df['Solvent'].unique())
     sle_temps = set(sle_df['Temperature_K'].unique())
 

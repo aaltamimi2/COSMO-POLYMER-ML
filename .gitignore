@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Data (comment out if you want to track data)
+# data/raw/*.csv
+# data/processed/*.csv
+
+# Models
+# models/*.pkl
+# models/*.h5
+# models/*.joblib
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Results (comment out if you want to track results)
+# results/figures/*.png
+# results/figures/*.pdf
+# results/metrics/*.json

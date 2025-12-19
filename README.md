@@ -34,11 +34,54 @@ COSMO-POLYMER-ML/
 
 ## Getting Started
 
-1. Place raw CSV files in `data/raw/`
-2. Install dependencies: `pip install -r requirements.txt`
-3. Run analysis notebooks in `notebooks/`
+### Installation
+
+```bash
+pip install -r requirements.txt
+```
+
+### Quick Start: Analyze EVOH Data
+
+1. Place your COSMO-therm tab files in `data/raw/`:
+   - `EVOH-REF.tab` (Reference method)
+   - `EVOH-SLE.tab` (SLE method)
+
+2. Run the analysis:
+   ```bash
+   cd notebooks
+   python analyze_evoh.py ../data/raw/EVOH-REF.tab ../data/raw/EVOH-SLE.tab
+   ```
+
+3. View results:
+   - Processed CSVs: `data/processed/evoh/`
+   - Comparison plots: `results/figures/evoh/`
+
+See [notebooks/README.md](notebooks/README.md) for detailed usage instructions.
+
+## Key Features
+
+### Data Processing
+- **Tab File Parser**: Reads COSMO-therm output tab files (REF and SLE formats)
+- **Automatic Filtering**: Matches REF data to SLE solvents and temperature ranges
+- **Standardized Output**: Generates clean CSV files with consistent column names
+
+### Variables Compared
+| Variable | Description | Units |
+|----------|-------------|-------|
+| **log10(x)** | Mole fraction solubility | - |
+| **log10(S)** | Volume-based solubility | log₁₀(mol/L) |
+| **w** | Mass fraction solubility | g/g |
+| **Δμ** | Chemical potential difference | kcal/mol |
+
+### Visualizations
+Each comparison includes 4-panel plots:
+1. **Parity Plot**: REF vs SLE with temperature coloring and statistics (R², MAE, RMSE)
+2. **Error Distribution**: Histogram showing (SLE - REF) errors
+3. **Error vs Temperature**: Systematic bias across temperature range
+4. **Error by Solvent**: Identifies solvents with largest prediction errors
 
 ## Data Files
 
-- `EVOH-SLE-COMMON.csv`: EVOH polymer with common solvents using SLE method
-- `EVOH-REF-COMMON.csv`: EVOH polymer with common solvents using reference method
+- Tab files from COSMO-therm calculations (REF and SLE methods)
+- Starting with EVOH polymer + common solvents
+- Temperature range: 25-130°C in 5°C increments

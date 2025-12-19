@@ -5,7 +5,7 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 from typing import Optional, Tuple
-from tab_parser import parse_tab_file, extract_common_columns
+from .tab_parser import parse_tab_file, extract_common_columns
 
 
 def process_and_merge_data(

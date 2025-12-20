@@ -3,6 +3,7 @@ Main analysis script for EVOH data comparison
 Run this script to process tab files and generate comparison plots
 """
 import sys
+import re
 from pathlib import Path
 
 # Add src to path
@@ -10,6 +11,46 @@ sys.path.insert(0, str(Path(__file__).parent.parent / 'src'))
 
 from data_processing.process_tab_files import process_and_merge_data, print_data_summary
 from visualization.comparison_plots import plot_all_variables
+
+
+def extract_polymer_name(ref_file: str, sle_file: str) -> str:
+    """
+    Extract polymer name from input filenames
+
+    Looks for patterns like:
+    - all-solvents-PS.tab -> PS
+    - EVOH-REF.tab -> EVOH
+    - SLE-COMMON-PS.tab -> PS
+
+    Parameters:
+    -----------
+    ref_file : str
+        Path to first tab file
+    sle_file : str
+        Path to second tab file
+
+    Returns:
+    --------
+    str : Detected polymer name
+    """
+    # Try both files
+    for filepath in [ref_file, sle_file]:
+        filename = Path(filepath).stem  # Get filename without extension
+
+        # Pattern 1: Look for uppercase sequences after hyphen or underscore
+        # e.g., "all-solvents-PS" -> "PS", "EVOH-REF" -> "EVOH"
+        matches = re.findall(r'[-_]([A-Z][A-Z0-9]*)', filename)
+
+        # Filter out common suffixes like REF, SLE, COMMON
+        polymer_candidates = [m for m in matches if m not in ['REF', 'SLE', 'COMMON', 'ALL', 'TAB']]
+
+        if polymer_candidates:
+            # Return the last match (usually the polymer name)
+            return polymer_candidates[-1]
+
+    # Fallback to EVOH if can't detect
+    print("Warning: Could not auto-detect polymer name from filenames. Using default 'EVOH'")
+    return 'EVOH'
 
 
 def main(ref_tab_file: str, sle_tab_file: str, polymer_name: str = 'EVOH',
@@ -85,11 +126,15 @@ if __name__ == "__main__":
         print("Usage: python analyze_evoh.py <ref_tab_file> <sle_tab_file> [common_solvents_file]")
         print("\nExample:")
         print("  python analyze_evoh.py ../data/raw/EVOH-REF.tab ../data/raw/EVOH-SLE.tab")
-        print("  python analyze_evoh.py ../data/raw/EVOH-REF.tab ../data/raw/EVOH-SLE.tab ../data/raw/common_solvents.txt")
+        print("  python analyze_evoh.py ../data/raw/all-solvents-PS.tab ../data/raw/SLE-COMMON-PS.tab ../common-solvents-LIST.txt")
         sys.exit(1)
 
     ref_file = sys.argv[1]
     sle_file = sys.argv[2]
     common_solvents = sys.argv[3] if len(sys.argv) == 4 else None
 
-    main(ref_file, sle_file, polymer_name='EVOH', common_solvents_file=common_solvents)
+    # Auto-detect polymer name from filenames
+    polymer_name = extract_polymer_name(ref_file, sle_file)
+    print(f"Auto-detected polymer: {polymer_name}\n")
+
+    main(ref_file, sle_file, polymer_name=polymer_name, common_solvents_file=common_solvents)

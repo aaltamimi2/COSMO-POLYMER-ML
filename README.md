@@ -58,6 +58,29 @@ pip install -r requirements.txt
 
 See [notebooks/README.md](notebooks/README.md) for detailed usage instructions.
 
+### Quick Start: Train Correction Model
+
+After analyzing your reference polymers:
+
+```bash
+cd notebooks
+# Train correction model on EVOH data
+python train_correction_model.py ../data/processed/evoh/merged_comparison.csv
+
+# Apply to new polymer (no experimental data needed!)
+python predict_new_polymer.py \
+    ../data/raw/NEW-POLYMER-SLE.tab \
+    ../models/evoh/correction_model_log10_x.joblib
+```
+
+See [notebooks/README_MODELING.md](notebooks/README_MODELING.md) for complete modeling workflow.
+
+## Workflow
+
+1. **Data Comparison** (`analyze_evoh.py`): Compare REF vs SLE for polymers with experimental data
+2. **Model Training** (`train_correction_model.py`): Learn systematic corrections from ~10 reference polymers
+3. **Prediction** (`predict_new_polymer.py`): Apply corrections to new polymers without experimental data
+
 ## Key Features
 
 ### Data Processing

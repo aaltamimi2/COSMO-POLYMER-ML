@@ -1,0 +1,93 @@
+======================================================================
+ACTIVE LEARNING WITH REAL SOLUBILITY DATA
+======================================================================
+
+[1/5] Loading solubility data from REF-DATA...
+[INFO] Loading multiple CSV files from directory: REF-DATA
+  Loading: COMMON-solvents-PP-LMW.csv
+    Extracted polymer name from filename: PP-LMW
+  Loading: COMMON-solvents-EVOH.csv
+    Extracted polymer name from filename: EVOH
+  Loading: COMMON-solvents-PET.csv
+    Extracted polymer name from filename: PET
+  Loading: COMMON-solvents-LDPE.csv
+    Extracted polymer name from filename: LDPE
+  Loading: COMMON-solvents-PVC.csv
+    Extracted polymer name from filename: PVC
+  Loading: COMMON-solvents-HDPE.csv
+    Extracted polymer name from filename: HDPE
+  Loading: COMMON-solvents-nylon66.csv
+    Extracted polymer name from filename: nylon66
+  Loading: COMMON-solvents-PS.csv
+  Loading: COMMON-solvents-PC.csv
+    Extracted polymer name from filename: PC
+[INFO] Loaded 9 files, 8820 total rows
+      Data shape: (8820, 4)
+      Polymers: 9
+      Solvents: 32
+      Temperature range: 25.0 - 160.0°C
+
+      Filtering to temperature = 25.0°C...
+      Using temperature: 25°C
+      Filtered data shape: (315, 4)
+
+[2/5] Computing solubility scores (method='versatility')...
+      Score range: [0.00, 0.38]
+      Top 3 polymers:
+        PS: 0.38
+        PVC: 0.34
+        PP-LMW: 0.20
+
+[3/5] Building polymer feature database...
+      Polymers with features: 9
+
+[4/5] Computing molecular features...
+[INFO] PCA: 8 components, 100.0% variance
+      Feature matrix: (9, 8)
+
+[5/5] Starting active learning campaign...
+
+--- Initial Random Sampling (2 polymers) ---
+  ✓ PVC: score = 0.915
+  ✓ PC: score = 0.382
+
+--- Iteration 1/3 ---
+  Top 5 suggestions (EI):
+    1. nylon66 (acq=0.0207, μ=0.649, σ=0.266)
+    2. EVOH (acq=0.0207, μ=0.649, σ=0.266)
+    3. PET (acq=0.0207, μ=0.649, σ=0.266)
+    4. PS (acq=0.0207, μ=0.649, σ=0.266)
+    5. PP-LMW (acq=0.0207, μ=0.649, σ=0.266)
+  ✓ Tested: nylon66 → score = 0.047
+  Current best: PVC (0.915)
+
+--- Iteration 2/3 ---
+  Top 5 suggestions (EI):
+    1. EVOH (acq=0.0151, μ=0.448, σ=0.357)
+    2. PET (acq=0.0151, μ=0.448, σ=0.357)
+    3. PS (acq=0.0151, μ=0.448, σ=0.357)
+    4. PP-LMW (acq=0.0151, μ=0.448, σ=0.357)
+    5. LDPE (acq=0.0151, μ=0.448, σ=0.357)
+  ✓ Tested: EVOH → score = 0.287
+  Current best: PVC (0.915)
+[OK] Saved: al_sweep_results/temp_25C/method_versatility/acq_ei/temp25_ei_versatility_iter3/results/gp_predictions_iter02.png
+
+--- Iteration 3/3 ---
+  Top 5 suggestions (EI):
+    1. PET (acq=0.0069, μ=0.408, σ=0.317)
+    2. PS (acq=0.0069, μ=0.408, σ=0.317)
+    3. PP-LMW (acq=0.0069, μ=0.408, σ=0.317)
+    4. LDPE (acq=0.0069, μ=0.408, σ=0.317)
+    5. HDPE (acq=0.0069, μ=0.408, σ=0.317)
+  ✓ Tested: PET → score = 0.029
+  Current best: PVC (0.915)
+
+======================================================================
+CAMPAIGN COMPLETE
+======================================================================
+Best found: PVC (0.915)
+True best:  PS (1.000)
+Efficiency: Found rank 2 / 9
+[OK] Saved: al_sweep_results/temp_25C/method_versatility/acq_ei/temp25_ei_versatility_iter3/results/learning_curve.png
+
+Done! Check 'al_sweep_results/temp_25C/method_versatility/acq_ei/temp25_ei_versatility_iter3/results/' for results.

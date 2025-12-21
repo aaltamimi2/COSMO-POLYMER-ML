@@ -1,0 +1,43 @@
+======================================================================
+DETAILED STATISTICS
+======================================================================
+
+Overall Statistics:
+----------------------------------------------------------------------
+       temperature  iterations  initial_samples  best_score  efficiency_rank  n_polymers_tested  runtime_sec
+count    42.000000   42.000000        42.000000   42.000000        42.000000                0.0    42.000000
+mean     52.261905    8.261905         2.119048    0.902739         1.023810                NaN     2.880952
+std      44.805846    1.711646         0.452763    0.296726         0.154303                NaN     0.550050
+min      25.000000    3.000000         1.000000    0.000000         1.000000                NaN     1.000000
+25%      25.000000    8.000000         2.000000    1.000000         1.000000                NaN     3.000000
+50%      25.000000    8.000000         2.000000    1.000000         1.000000                NaN     3.000000
+75%      80.000000    8.000000         2.000000    1.000000         1.000000                NaN     3.000000
+max     160.000000   15.000000         4.000000    1.000000         2.000000                NaN     4.000000
+
+Top 10 Experiments by Best Score:
+----------------------------------------------------------------------
+                experiment  temperature acquisition      method best_polymer  best_score  efficiency_rank
+             temp25_ei_max           25          ei         max         EVOH         1.0                1
+   temp25_ei_count_thresh5           25          ei       count           PS         1.0                1
+temp25_ei_specific_toluene           25          ei    specific           PS         1.0                1
+            temp25_ei_mean           25          ei        mean         EVOH         1.0                1
+    temp140_ei_versatility          140          ei versatility         HDPE         1.0                1
+   temp140_ucb_versatility          140         ucb versatility         HDPE         1.0                1
+    temp160_ei_versatility          160          ei versatility         LDPE         1.0                1
+   temp160_ucb_versatility          160         ucb versatility         HDPE         1.0                1
+  temp25_ei_count_thresh10           25          ei       count         EVOH         1.0                1
+    temp120_ei_versatility          120          ei versatility         LDPE         1.0                1
+
+Top 10 Experiments by Efficiency:
+----------------------------------------------------------------------
+               experiment  temperature acquisition      method best_polymer  best_score  efficiency_rank
+    temp25_ei_versatility           25          ei versatility           PS         1.0                1
+    temp50_ei_versatility           50          ei versatility           PS         1.0                1
+    temp80_ei_versatility           80          ei versatility           PS         1.0                1
+   temp100_ei_versatility          100          ei versatility           PS         1.0                1
+   temp120_ei_versatility          120          ei versatility         LDPE         1.0                1
+    temp25_ei_versatility           25          ei versatility           PS         1.0                1
+   temp25_ucb_versatility           25         ucb versatility           PS         1.0                1
+    temp25_pi_versatility           25          pi versatility           PS         1.0                1
+temp25_greedy_versatility           25      greedy versatility           PS         1.0                1
+    temp25_ei_versatility           25          ei versatility           PS         1.0                1

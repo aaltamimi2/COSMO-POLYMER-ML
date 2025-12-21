@@ -1,0 +1,268 @@
+================================================================================
+CROSS-POLYMER CORRECTION MODEL ANALYSIS
+================================================================================
+
+================================================================================
+LOADING POLYMER DATA
+================================================================================
+Loading pc data from /home/aaltamimi2/COSMO-POLYMER-ML/data/processed/pc/merged_comparison.csv
+  pc: 536 data points
+Loading ps data from /home/aaltamimi2/COSMO-POLYMER-ML/data/processed/ps/merged_comparison.csv
+  ps: 591 data points
+Loading evoh data from /home/aaltamimi2/COSMO-POLYMER-ML/data/processed/evoh/merged_comparison.csv
+  evoh: 899 data points
+
+Loaded 3 polymers: ['pc', 'ps', 'evoh']
+
+================================================================================
+ANALYSIS 1: Universal Model Strategies
+================================================================================
+
+================================================================================
+COMPARING UNIVERSAL MODEL STRATEGIES
+================================================================================
+
+1. Training POLYMER-AGNOSTIC model (universal correction factor)...
+================================================================================
+Training Universal Correction Model
+================================================================================
+Polymers: ['pc', 'ps', 'evoh']
+Target variable: log10_x
+Include polymer ID: False
+Model type: ridge
+
+Total data points: 2026
+  pc: 536
+  ps: 591
+  evoh: 899
+
+Preparing features...
+Total features: 6
+
+Training ridge model...
+
+Performing 5-fold cross-validation...
+
+Cross-Validation Results:
+Metric      Mean      Std
+   MAE  0.725433 0.111363
+  RMSE  0.834279 0.140835
+    R2 -5.174946 6.410680
+
+Top 10 Most Important Features:
+          feature  importance
+delta_mu_norm_SLE    1.523279
+            inv_T    1.200619
+      log10_x_SLE    1.163525
+     delta_mu_SLE    0.451885
+    Temperature_C    0.297863
+    Temperature_K    0.297863
+
+================================================================================
+
+2. Training POLYMER-AWARE model (polymer-specific corrections)...
+================================================================================
+Training Universal Correction Model
+================================================================================
+Polymers: ['pc', 'ps', 'evoh']
+Target variable: log10_x
+Include polymer ID: True
+Model type: ridge
+
+Total data points: 2026
+  pc: 536
+  ps: 591
+  evoh: 899
+
+Preparing features...
+Added polymer identifiers: ['polymer_evoh', 'polymer_pc', 'polymer_ps']
+Total features: 9
+
+Training ridge model...
+
+Performing 5-fold cross-validation...
+
+Cross-Validation Results:
+Metric     Mean      Std
+   MAE 0.318067 0.165199
+  RMSE 0.426699 0.243376
+    R2 0.202354 0.722711
+
+Top 10 Most Important Features:
+          feature  importance
+delta_mu_norm_SLE    1.826688
+      log10_x_SLE    1.698075
+            inv_T    1.314189
+       polymer_ps    0.360804
+     delta_mu_SLE    0.318440
+    Temperature_C    0.287181
+    Temperature_K    0.287181
+       polymer_pc    0.271067
+     polymer_evoh    0.089440
+
+================================================================================
+CROSS-VALIDATION COMPARISON
+================================================================================
+        Strategy      MAE     RMSE        R2
+Polymer-Agnostic 0.725433 0.834279 -5.174946
+   Polymer-Aware 0.318067 0.426699  0.202354
+
+================================================================================
+PER-POLYMER PERFORMANCE
+================================================================================
+
+Polymer-Agnostic:
+================================================================================
+Comparing Performance Across Polymers
+================================================================================
+
+Evaluating on pc (536 points)...
+
+Evaluating on ps (591 points)...
+
+Evaluating on evoh (899 points)...
+
+================================================================================
+Results Summary
+================================================================================
+Polymer  N_points  MAE_correction  RMSE_correction  R2_correction  MAE_original  MAE_corrected  Improvement  Improvement_pct
+     pc       536        0.217759         0.231677       0.138393      0.417105       0.217759     0.199346        47.792727
+     ps       591        0.746885         0.795934     -29.506378      0.470685       0.746885    -0.276200       -58.680480
+   evoh       899        0.543276         0.723169       0.284862      1.924260       0.543276     1.380984        71.767018
+
+Polymer-Aware:
+================================================================================
+Comparing Performance Across Polymers
+================================================================================
+
+Evaluating on pc (536 points)...
+
+Evaluating on ps (591 points)...
+
+Evaluating on evoh (899 points)...
+
+================================================================================
+Results Summary
+================================================================================
+Polymer  N_points  MAE_correction  RMSE_correction  R2_correction  MAE_original  MAE_corrected  Improvement  Improvement_pct
+     pc       536        0.063387         0.087035       0.878400      0.417105       0.063387     0.353718        84.803193
+     ps       591        0.233455         0.279037      -2.749374      0.470685       0.233455     0.237229        50.400866
+   evoh       899        0.428551         0.618118       0.477540      1.924260       0.428551     1.495710        77.729073
+
+Results saved to: /home/aaltamimi2/COSMO-POLYMER-ML/results/cross_polymer_analysis
+
+Creating visualizations...
+Saved strategy comparison plot: /home/aaltamimi2/COSMO-POLYMER-ML/results/cross_polymer_analysis/strategy_comparison_log10_x.png
+Saved polymer performance plot: /home/aaltamimi2/COSMO-POLYMER-ML/results/cross_polymer_analysis/polymer_performance_log10_x.png
+Saved parity plots: /home/aaltamimi2/COSMO-POLYMER-ML/results/cross_polymer_analysis/parity_agnostic_log10_x.png
+Saved parity plots: /home/aaltamimi2/COSMO-POLYMER-ML/results/cross_polymer_analysis/parity_aware_log10_x.png
+
+================================================================================
+ANALYSIS 2: Leave-One-Polymer-Out Cross-Validation
+================================================================================
+
+Testing polymer-agnostic model generalization...
+================================================================================
+Leave-One-Polymer-Out Cross-Validation
+================================================================================
+Polymers: ['pc', 'ps', 'evoh']
+Model: ridge
+Include polymer ID: False
+
+================================================================================
+Holding out: pc
+================================================================================
+Training on: ['ps', 'evoh']
+Training points: 1490
+Test points: 536
+
+Results for pc:
+  MAE (original): 0.417
+  MAE (corrected): 4.315
+  Improvement: -3.897 (-934.4%)
+
+================================================================================
+Holding out: ps
+================================================================================
+Training on: ['pc', 'evoh']
+Training points: 1435
+Test points: 591
+
+Results for ps:
+  MAE (original): 0.471
+  MAE (corrected): 1.079
+  Improvement: -0.608 (-129.3%)
+
+================================================================================
+Holding out: evoh
+================================================================================
+Training on: ['pc', 'ps']
+Training points: 1127
+Test points: 899
+
+Results for evoh:
+  MAE (original): 1.924
+  MAE (corrected): 1.449
+  Improvement: 0.476 (24.7%)
+
+================================================================================
+Leave-One-Polymer-Out Results Summary
+================================================================================
+Test_Polymer  MAE_original  MAE_corrected  Improvement_pct
+          pc      0.417105       4.314512      -934.394885
+          ps      0.470685       1.079105      -129.262849
+        evoh      1.924260       1.448595        24.719408
+Saved LOPO results plot: /home/aaltamimi2/COSMO-POLYMER-ML/results/cross_polymer_analysis/leave_one_polymer_out_log10_x.png
+
+================================================================================
+ANALYSIS 3: Compare Model Types on Combined Data
+================================================================================
+Testing Ridge...
+Testing Lasso...
+Testing ElasticNet...
+Testing Random Forest...
+Testing Gradient Boosting...
+
+             Model  MAE_mean  MAE_std  RMSE_mean  RMSE_std   R2_mean   R2_std
+    Random Forest  0.436886 0.136110   0.711847  0.156325 -2.995513 4.900646
+Gradient Boosting  0.561151 0.140133   0.774625  0.182384 -3.770198 6.123359
+            Ridge  0.725433 0.111363   0.834279  0.140835 -5.174946 6.410680
+       ElasticNet  0.766108 0.182896   0.865718  0.242233 -4.222069 5.612787
+            Lasso  0.886074 0.190654   0.977309  0.245432 -5.913657 6.408718
+
+================================================================================
+ANALYSIS COMPLETE!
+================================================================================
+
+Results saved to: /home/aaltamimi2/COSMO-POLYMER-ML/results/cross_polymer_analysis
+
+Key files generated:
+
+Models:
+  - universal_agnostic_*.joblib: Polymer-agnostic universal model
+  - universal_aware_*.joblib: Polymer-aware universal model
+
+Data (CSV):
+  - strategy_comparison_*.csv: Comparison of modeling strategies
+  - polymer_performance_*.csv: Per-polymer performance metrics
+  - leave_one_polymer_out_*.csv: Generalization test results
+  - model_type_comparison_*.csv: Comparison of different ML algorithms
+
+Figures (PNG):
+  - strategy_comparison_*.png: Bar plots comparing strategies
+  - polymer_performance_*.png: Per-polymer performance comparison
+  - parity_agnostic_*.png: Parity plots for polymer-agnostic model
+  - parity_aware_*.png: Parity plots for polymer-aware model
+  - leave_one_polymer_out_*.png: LOPO cross-validation results
+
+================================================================================
+RECOMMENDATIONS
+================================================================================
+
+Best overall strategy: Polymer-Aware
+
+Leave-one-polymer-out average improvement: -346.3%
+  -> WARNING: Model may not generalize well to new polymers
+
+Best model type: Random Forest
+  MAE: 0.437 ± 0.136

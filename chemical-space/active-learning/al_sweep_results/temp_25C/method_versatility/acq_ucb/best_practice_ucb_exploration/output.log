@@ -1,0 +1,120 @@
+======================================================================
+ACTIVE LEARNING WITH REAL SOLUBILITY DATA
+======================================================================
+
+[1/5] Loading solubility data from REF-DATA...
+[INFO] Loading multiple CSV files from directory: REF-DATA
+  Loading: COMMON-solvents-PP-LMW.csv
+    Extracted polymer name from filename: PP-LMW
+  Loading: COMMON-solvents-EVOH.csv
+    Extracted polymer name from filename: EVOH
+  Loading: COMMON-solvents-PET.csv
+    Extracted polymer name from filename: PET
+  Loading: COMMON-solvents-LDPE.csv
+    Extracted polymer name from filename: LDPE
+  Loading: COMMON-solvents-PVC.csv
+    Extracted polymer name from filename: PVC
+  Loading: COMMON-solvents-HDPE.csv
+    Extracted polymer name from filename: HDPE
+  Loading: COMMON-solvents-nylon66.csv
+    Extracted polymer name from filename: nylon66
+  Loading: COMMON-solvents-PS.csv
+  Loading: COMMON-solvents-PC.csv
+    Extracted polymer name from filename: PC
+[INFO] Loaded 9 files, 8820 total rows
+      Data shape: (8820, 4)
+      Polymers: 9
+      Solvents: 32
+      Temperature range: 25.0 - 160.0°C
+
+      Filtering to temperature = 25.0°C...
+      Using temperature: 25°C
+      Filtered data shape: (315, 4)
+
+[2/5] Computing solubility scores (method='versatility')...
+      Score range: [0.00, 0.38]
+      Top 3 polymers:
+        PS: 0.38
+        PVC: 0.34
+        PP-LMW: 0.20
+
+[3/5] Building polymer feature database...
+      Polymers with features: 9
+
+[4/5] Computing molecular features...
+[INFO] PCA: 8 components, 100.0% variance
+      Feature matrix: (9, 8)
+
+[5/5] Starting active learning campaign...
+
+--- Initial Random Sampling (3 polymers) ---
+  ✓ PS: score = 1.000
+  ✓ nylon66: score = 0.047
+  ✓ PET: score = 0.029
+
+--- Iteration 1/12 ---
+  Top 5 suggestions (UCB):
+    1. EVOH (acq=1.2657, μ=0.359, σ=0.454)
+    2. PC (acq=1.2657, μ=0.359, σ=0.454)
+    3. PVC (acq=1.2657, μ=0.359, σ=0.454)
+    4. PP-LMW (acq=1.2657, μ=0.359, σ=0.454)
+    5. LDPE (acq=1.2657, μ=0.359, σ=0.454)
+  ✓ Tested: EVOH → score = 0.287
+  Current best: PS (1.000)
+
+--- Iteration 2/12 ---
+  Top 5 suggestions (UCB):
+    1. PC (acq=1.1287, μ=0.341, σ=0.394)
+    2. PVC (acq=1.1287, μ=0.341, σ=0.394)
+    3. PP-LMW (acq=1.1287, μ=0.341, σ=0.394)
+    4. LDPE (acq=1.1287, μ=0.341, σ=0.394)
+    5. HDPE (acq=1.1287, μ=0.341, σ=0.394)
+  ✓ Tested: PC → score = 0.382
+  Current best: PS (1.000)
+[OK] Saved: al_sweep_results/temp_25C/method_versatility/acq_ucb/best_practice_ucb_exploration/results/gp_predictions_iter02.png
+
+--- Iteration 3/12 ---
+  Top 5 suggestions (UCB):
+    1. PVC (acq=1.0546, μ=0.349, σ=0.353)
+    2. PP-LMW (acq=1.0546, μ=0.349, σ=0.353)
+    3. LDPE (acq=1.0546, μ=0.349, σ=0.353)
+    4. HDPE (acq=1.0546, μ=0.349, σ=0.353)
+  ✓ Tested: PVC → score = 0.915
+  Current best: PS (1.000)
+
+--- Iteration 4/12 ---
+  Top 5 suggestions (UCB):
+    1. PP-LMW (acq=1.2133, μ=0.443, σ=0.385)
+    2. LDPE (acq=1.2133, μ=0.443, σ=0.385)
+    3. HDPE (acq=1.2133, μ=0.443, σ=0.385)
+  ✓ Tested: PP-LMW → score = 0.529
+  Current best: PS (1.000)
+[OK] Saved: al_sweep_results/temp_25C/method_versatility/acq_ucb/best_practice_ucb_exploration/results/gp_predictions_iter04.png
+
+--- Iteration 5/12 ---
+  Top 5 suggestions (UCB):
+    1. LDPE (acq=1.1711, μ=0.456, σ=0.358)
+    2. HDPE (acq=1.1711, μ=0.456, σ=0.358)
+  ✓ Tested: LDPE → score = 0.042
+  Current best: PS (1.000)
+
+--- Iteration 6/12 ---
+  Top 5 suggestions (UCB):
+    1. HDPE (acq=0.8862, μ=0.241, σ=0.323)
+  ✓ Tested: HDPE → score = 0.000
+  Current best: PS (1.000)
+[OK] Saved: al_sweep_results/temp_25C/method_versatility/acq_ucb/best_practice_ucb_exploration/results/gp_predictions_iter06.png
+
+--- Iteration 7/12 ---
+[WARN] All polymers have been tested!
+  All polymers tested!
+
+======================================================================
+CAMPAIGN COMPLETE
+======================================================================
+Best found: PS (1.000)
+True best:  PS (1.000)
+Efficiency: Found rank 1 / 9
+[OK] Saved: al_sweep_results/temp_25C/method_versatility/acq_ucb/best_practice_ucb_exploration/results/learning_curve.png
+
+Done! Check 'al_sweep_results/temp_25C/method_versatility/acq_ucb/best_practice_ucb_exploration/results/' for results.

@@ -1,0 +1,620 @@
+========================================
+Active Learning Sweep Started
+Date: Sat Dec 20 14:01:47 CST 2025
+========================================
+
+
+======================================================================
+SWEEP 1: Temperature Variation
+======================================================================
+
+----------------------------------------
+Experiment 1: temp25_ei_versatility
+  Temperature: 25°C
+  Acquisition: ei
+  Method: versatility
+  Iterations: 8
+  Initial: 2
+  Extra args: 
+
+  Results: PS (score=0.9999999997344747, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 2: temp50_ei_versatility
+  Temperature: 50°C
+  Acquisition: ei
+  Method: versatility
+  Iterations: 8
+  Initial: 2
+  Extra args: 
+
+  Results: PS (score=0.9999999998667202, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 3: temp80_ei_versatility
+  Temperature: 80°C
+  Acquisition: ei
+  Method: versatility
+  Iterations: 8
+  Initial: 2
+  Extra args: 
+
+  Results: PS (score=0.9999999999099572, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 4: temp100_ei_versatility
+  Temperature: 100°C
+  Acquisition: ei
+  Method: versatility
+  Iterations: 8
+  Initial: 2
+  Extra args: 
+
+  Results: PS (score=0.9999999999274408, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 5: temp120_ei_versatility
+  Temperature: 120°C
+  Acquisition: ei
+  Method: versatility
+  Iterations: 8
+  Initial: 2
+  Extra args: 
+
+  Results: LDPE (score=0.9999999999437302, rank=1/)
+  Runtime: 3s
+
+
+======================================================================
+SWEEP 2: Acquisition Function Variation
+======================================================================
+
+----------------------------------------
+Experiment 6: temp25_ei_versatility
+  Temperature: 25°C
+  Acquisition: ei
+  Method: versatility
+  Iterations: 8
+  Initial: 2
+  Extra args: 
+
+  Results: PS (score=0.9999999997344747, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 7: temp25_ucb_versatility
+  Temperature: 25°C
+  Acquisition: ucb
+  Method: versatility
+  Iterations: 8
+  Initial: 2
+  Extra args: 
+
+  Results: PS (score=0.9999999997344747, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 8: temp25_pi_versatility
+  Temperature: 25°C
+  Acquisition: pi
+  Method: versatility
+  Iterations: 8
+  Initial: 2
+  Extra args: 
+
+  Results: PS (score=0.9999999997344747, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 9: temp25_greedy_versatility
+  Temperature: 25°C
+  Acquisition: greedy
+  Method: versatility
+  Iterations: 8
+  Initial: 2
+  Extra args: 
+
+  Results: PS (score=0.9999999997344747, rank=1/)
+  Runtime: 3s
+
+
+======================================================================
+SWEEP 3: Scoring Method Variation
+======================================================================
+
+----------------------------------------
+Experiment 10: temp25_ei_versatility
+  Temperature: 25°C
+  Acquisition: ei
+  Method: versatility
+  Iterations: 8
+  Initial: 2
+  Extra args: 
+
+  Results: PS (score=0.9999999997344747, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 11: temp25_ei_max
+  Temperature: 25°C
+  Acquisition: ei
+  Method: max
+  Iterations: 8
+  Initial: 2
+  Extra args: 
+
+  Results: EVOH (score=0.999999999999, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 12: temp25_ei_mean
+  Temperature: 25°C
+  Acquisition: ei
+  Method: mean
+  Iterations: 8
+  Initial: 2
+  Extra args: 
+
+  Results: EVOH (score=0.9999999999689418, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 13: temp25_ei_count_thresh5
+  Temperature: 25°C
+  Acquisition: ei
+  Method: count
+  Iterations: 8
+  Initial: 2
+  Extra args: --threshold 5
+
+  Results: PS (score=0.9999999999875, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 14: temp25_ei_count_thresh10
+  Temperature: 25°C
+  Acquisition: ei
+  Method: count
+  Iterations: 8
+  Initial: 2
+  Extra args: --threshold 10
+
+  Results: EVOH (score=0.99999999995, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 15: temp25_ei_count_thresh20
+  Temperature: 25°C
+  Acquisition: ei
+  Method: count
+  Iterations: 8
+  Initial: 2
+  Extra args: --threshold 20
+
+  Results: EVOH (score=0.9999999999, rank=1/)
+  Runtime: 2s
+
+
+======================================================================
+SWEEP 4: Solvent-Specific Optimization
+======================================================================
+
+----------------------------------------
+Experiment 16: temp25_ei_specific_propanol
+  Temperature: 25°C
+  Acquisition: ei
+  Method: specific
+  Iterations: 8
+  Initial: 2
+  Extra args: --solvent propanol
+
+  Results: PVC (score=0.9999999993148838, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 17: temp25_ei_specific_2-propanol
+  Temperature: 25°C
+  Acquisition: ei
+  Method: specific
+  Iterations: 8
+  Initial: 2
+  Extra args: --solvent 2-propanol
+
+  Results: PVC (score=0.999999999343029, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 18: temp25_ei_specific_acetone
+  Temperature: 25°C
+  Acquisition: ei
+  Method: specific
+  Iterations: 8
+  Initial: 2
+  Extra args: --solvent acetone
+
+  Results: HDPE (score=0.0, rank=1/)
+  Runtime: 2s
+
+----------------------------------------
+Experiment 19: temp25_ei_specific_toluene
+  Temperature: 25°C
+  Acquisition: ei
+  Method: specific
+  Iterations: 8
+  Initial: 2
+  Extra args: --solvent toluene
+
+  Results: PS (score=0.999999999972546, rank=1/)
+  Runtime: 4s
+
+----------------------------------------
+Experiment 20: temp25_ei_specific_chloroform
+  Temperature: 25°C
+  Acquisition: ei
+  Method: specific
+  Iterations: 8
+  Initial: 2
+  Extra args: --solvent chloroform
+
+  Results: PP-LMW (score=0.0, rank=1/)
+  Runtime: 2s
+
+----------------------------------------
+Experiment 21: temp25_ei_specific_THF
+  Temperature: 25°C
+  Acquisition: ei
+  Method: specific
+  Iterations: 8
+  Initial: 2
+  Extra args: --solvent THF
+
+  Results: PVC (score=0.0, rank=1/)
+  Runtime: 2s
+
+----------------------------------------
+Experiment 22: temp25_ei_specific_water
+  Temperature: 25°C
+  Acquisition: ei
+  Method: specific
+  Iterations: 8
+  Initial: 2
+  Extra args: --solvent water
+
+  Results: PS (score=0.0, rank=1/)
+  Runtime: 3s
+
+
+======================================================================
+SWEEP 5: Iteration Count Variation
+======================================================================
+
+----------------------------------------
+Experiment 23: temp25_ei_versatility_iter3
+  Temperature: 25°C
+  Acquisition: ei
+  Method: versatility
+  Iterations: 3
+  Initial: 2
+  Extra args: 
+
+  Results: PVC (score=0.9150206375310016, rank=2/)
+  Runtime: 1s
+
+----------------------------------------
+Experiment 24: temp25_ei_versatility_iter5
+  Temperature: 25°C
+  Acquisition: ei
+  Method: versatility
+  Iterations: 5
+  Initial: 2
+  Extra args: 
+
+  Results: PS (score=0.9999999997344747, rank=1/)
+  Runtime: 2s
+
+----------------------------------------
+Experiment 25: temp25_ei_versatility_iter8
+  Temperature: 25°C
+  Acquisition: ei
+  Method: versatility
+  Iterations: 8
+  Initial: 2
+  Extra args: 
+
+  Results: PS (score=0.9999999997344747, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 26: temp25_ei_versatility_iter10
+  Temperature: 25°C
+  Acquisition: ei
+  Method: versatility
+  Iterations: 10
+  Initial: 2
+  Extra args: 
+
+  Results: PS (score=0.9999999997344747, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 27: temp25_ei_versatility_iter15
+  Temperature: 25°C
+  Acquisition: ei
+  Method: versatility
+  Iterations: 15
+  Initial: 2
+  Extra args: 
+
+  Results: PS (score=0.9999999997344747, rank=1/)
+  Runtime: 3s
+
+
+======================================================================
+SWEEP 6: Initial Sample Size Variation
+======================================================================
+
+----------------------------------------
+Experiment 28: temp25_ei_versatility_init1
+  Temperature: 25°C
+  Acquisition: ei
+  Method: versatility
+  Iterations: 8
+  Initial: 1
+  Extra args: 
+
+  Results: PS (score=0.9999999997344747, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 29: temp25_ei_versatility_init2
+  Temperature: 25°C
+  Acquisition: ei
+  Method: versatility
+  Iterations: 8
+  Initial: 2
+  Extra args: 
+
+  Results: PS (score=0.9999999997344747, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 30: temp25_ei_versatility_init3
+  Temperature: 25°C
+  Acquisition: ei
+  Method: versatility
+  Iterations: 8
+  Initial: 3
+  Extra args: 
+
+  Results: PS (score=0.9999999997344747, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 31: temp25_ei_versatility_init4
+  Temperature: 25°C
+  Acquisition: ei
+  Method: versatility
+  Iterations: 8
+  Initial: 4
+  Extra args: 
+
+  Results: PS (score=0.9999999997344747, rank=1/)
+  Runtime: 3s
+
+
+======================================================================
+SWEEP 7: High-Temperature Experiments
+======================================================================
+
+----------------------------------------
+Experiment 32: temp100_ei_versatility
+  Temperature: 100°C
+  Acquisition: ei
+  Method: versatility
+  Iterations: 8
+  Initial: 2
+  Extra args: 
+
+  Results: PS (score=0.9999999999274408, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 33: temp100_ucb_versatility
+  Temperature: 100°C
+  Acquisition: ucb
+  Method: versatility
+  Iterations: 8
+  Initial: 2
+  Extra args: 
+
+  Results: PS (score=0.9999999999274408, rank=1/)
+  Runtime: 2s
+
+----------------------------------------
+Experiment 34: temp120_ei_versatility
+  Temperature: 120°C
+  Acquisition: ei
+  Method: versatility
+  Iterations: 8
+  Initial: 2
+  Extra args: 
+
+  Results: LDPE (score=0.9999999999437302, rank=1/)
+  Runtime: 4s
+
+----------------------------------------
+Experiment 35: temp120_ucb_versatility
+  Temperature: 120°C
+  Acquisition: ucb
+  Method: versatility
+  Iterations: 8
+  Initial: 2
+  Extra args: 
+
+  Results: LDPE (score=0.9999999999437302, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 36: temp140_ei_versatility
+  Temperature: 140°C
+  Acquisition: ei
+  Method: versatility
+  Iterations: 8
+  Initial: 2
+  Extra args: 
+
+  Results: HDPE (score=0.999999999961142, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 37: temp140_ucb_versatility
+  Temperature: 140°C
+  Acquisition: ucb
+  Method: versatility
+  Iterations: 8
+  Initial: 2
+  Extra args: 
+
+  Results: HDPE (score=0.999999999961142, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 38: temp160_ei_versatility
+  Temperature: 160°C
+  Acquisition: ei
+  Method: versatility
+  Iterations: 8
+  Initial: 2
+  Extra args: 
+
+  Results: LDPE (score=0.9999999999519293, rank=1/)
+  Runtime: 4s
+
+----------------------------------------
+Experiment 39: temp160_ucb_versatility
+  Temperature: 160°C
+  Acquisition: ucb
+  Method: versatility
+  Iterations: 8
+  Initial: 2
+  Extra args: 
+
+  Results: HDPE (score=0.9999999999519293, rank=1/)
+  Runtime: 3s
+
+
+======================================================================
+SWEEP 8: Best Practice Configurations
+======================================================================
+
+----------------------------------------
+Experiment 40: best_practice_ei_comprehensive
+  Temperature: 25°C
+  Acquisition: ei
+  Method: versatility
+  Iterations: 12
+  Initial: 3
+  Extra args: 
+
+  Results: PS (score=0.9999999997344747, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 41: best_practice_ucb_exploration
+  Temperature: 25°C
+  Acquisition: ucb
+  Method: versatility
+  Iterations: 12
+  Initial: 3
+  Extra args: 
+
+  Results: PS (score=0.9999999997344747, rank=1/)
+  Runtime: 3s
+
+----------------------------------------
+Experiment 42: best_practice_midtemp_ei
+  Temperature: 80°C
+  Acquisition: ei
+  Method: versatility
+  Iterations: 10
+  Initial: 3
+  Extra args: 
+
+  Results: PS (score=0.9999999999099572, rank=1/)
+  Runtime: 3s
+
+
+======================================================================
+GENERATING SUMMARY REPORT
+======================================================================
+
+======================================================================
+ACTIVE LEARNING SWEEP SUMMARY
+======================================================================
+
+Total experiments: 42
+Average runtime: 2.9s
+
+Best polymer found most often: PS
+Average best score: 0.903
+Average efficiency rank: 1.0
+
+----------------------------------------------------------------------
+Performance by Acquisition Function:
+----------------------------------------------------------------------
+            best_score        efficiency_rank runtime_sec
+                  mean    std            mean        mean
+acquisition                                              
+ei                0.88  0.326           1.029       2.882
+greedy            1.00    NaN           1.000       3.000
+pi                1.00    NaN           1.000       3.000
+ucb               1.00  0.000           1.000       2.833
+
+----------------------------------------------------------------------
+Performance by Temperature:
+----------------------------------------------------------------------
+            best_score       efficiency_rank best_polymer
+                  mean   std            mean     <lambda>
+temperature                                              
+25               0.859  0.35           1.034           PS
+50               1.000   NaN           1.000           PS
+80               1.000  0.00           1.000           PS
+100              1.000  0.00           1.000           PS
+120              1.000  0.00           1.000         LDPE
+140              1.000  0.00           1.000         HDPE
+160              1.000  0.00           1.000         HDPE
+
+----------------------------------------------------------------------
+Performance by Scoring Method:
+----------------------------------------------------------------------
+            best_score        efficiency_rank
+                  mean    std            mean
+method                                       
+count            1.000  0.000           1.000
+max              1.000    NaN           1.000
+mean             1.000    NaN           1.000
+specific         0.429  0.535           1.000
+versatility      0.997  0.016           1.033
+
+[OK] Saved visualization: al_sweep_results/sweep_analysis.png
+[OK] Saved detailed stats: al_sweep_results/detailed_stats.txt
+
+======================================================================
+SWEEP COMPLETE
+======================================================================
+Total experiments run: 42
+Results saved in: al_sweep_results/
+
+Files generated:
+  - al_sweep_results/sweep_log.txt
+  - al_sweep_results/sweep_summary.csv
+  - al_sweep_results/sweep_analysis.png
+  - al_sweep_results/detailed_stats.txt
+  - Individual experiment folders in al_sweep_results/
+
+Date completed: Sat Dec 20 14:03:50 CST 2025
+======================================================================

@@ -1,0 +1,129 @@
+======================================================================
+ACTIVE LEARNING WITH REAL SOLUBILITY DATA
+======================================================================
+
+[1/5] Loading solubility data from REF-DATA...
+[INFO] Loading multiple CSV files from directory: REF-DATA
+  Loading: COMMON-solvents-PP-LMW.csv
+    Extracted polymer name from filename: PP-LMW
+  Loading: COMMON-solvents-EVOH.csv
+    Extracted polymer name from filename: EVOH
+  Loading: COMMON-solvents-PET.csv
+    Extracted polymer name from filename: PET
+  Loading: COMMON-solvents-LDPE.csv
+    Extracted polymer name from filename: LDPE
+  Loading: COMMON-solvents-PVC.csv
+    Extracted polymer name from filename: PVC
+  Loading: COMMON-solvents-HDPE.csv
+    Extracted polymer name from filename: HDPE
+  Loading: COMMON-solvents-nylon66.csv
+    Extracted polymer name from filename: nylon66
+  Loading: COMMON-solvents-PS.csv
+  Loading: COMMON-solvents-PC.csv
+    Extracted polymer name from filename: PC
+[INFO] Loaded 9 files, 8820 total rows
+      Data shape: (8820, 4)
+      Polymers: 9
+      Solvents: 32
+      Temperature range: 25.0 - 160.0°C
+
+      Filtering to temperature = 140.0°C...
+      Using temperature: 140°C
+      Filtered data shape: (315, 4)
+
+[2/5] Computing solubility scores (method='versatility')...
+      Score range: [0.74, 3.31]
+      Top 3 polymers:
+        HDPE: 3.31
+        LDPE: 3.28
+        PS: 2.48
+
+[3/5] Building polymer feature database...
+      Polymers with features: 9
+
+[4/5] Computing molecular features...
+[INFO] PCA: 8 components, 100.0% variance
+      Feature matrix: (9, 8)
+
+[5/5] Starting active learning campaign...
+
+--- Initial Random Sampling (2 polymers) ---
+  ✓ EVOH: score = 0.472
+  ✓ PC: score = 0.320
+
+--- Iteration 1/8 ---
+  Top 5 suggestions (EI):
+    1. nylon66 (acq=0.0049, μ=0.396, σ=0.076)
+    2. PET (acq=0.0049, μ=0.396, σ=0.076)
+    3. PVC (acq=0.0049, μ=0.396, σ=0.076)
+    4. PS (acq=0.0049, μ=0.396, σ=0.076)
+    5. PP-LMW (acq=0.0049, μ=0.396, σ=0.076)
+  ✓ Tested: nylon66 → score = 0.000
+  Current best: EVOH (0.472)
+
+--- Iteration 2/8 ---
+  Top 5 suggestions (EI):
+    1. PET (acq=0.0133, μ=0.264, σ=0.197)
+    2. PVC (acq=0.0133, μ=0.264, σ=0.197)
+    3. PS (acq=0.0133, μ=0.264, σ=0.197)
+    4. PP-LMW (acq=0.0133, μ=0.264, σ=0.197)
+    5. LDPE (acq=0.0133, μ=0.264, σ=0.197)
+  ✓ Tested: PET → score = 0.129
+  Current best: EVOH (0.472)
+[OK] Saved: al_sweep_results/temp_140C/method_versatility/acq_ei/temp140_ei_versatility/results/gp_predictions_iter02.png
+
+--- Iteration 3/8 ---
+  Top 5 suggestions (EI):
+    1. PVC (acq=0.0066, μ=0.230, σ=0.180)
+    2. PS (acq=0.0066, μ=0.230, σ=0.180)
+    3. PP-LMW (acq=0.0066, μ=0.230, σ=0.180)
+    4. LDPE (acq=0.0066, μ=0.230, σ=0.180)
+    5. HDPE (acq=0.0066, μ=0.230, σ=0.180)
+  ✓ Tested: PVC → score = 0.600
+  Current best: PVC (0.600)
+
+--- Iteration 4/8 ---
+  Top 5 suggestions (EI):
+    1. PP-LMW (acq=0.0183, μ=0.463, σ=0.170)
+    2. LDPE (acq=0.0174, μ=0.449, σ=0.177)
+    3. HDPE (acq=0.0174, μ=0.449, σ=0.177)
+    4. PS (acq=0.0102, μ=0.346, σ=0.208)
+  ✓ Tested: PP-LMW → score = 0.629
+  Current best: PP-LMW (0.629)
+[OK] Saved: al_sweep_results/temp_140C/method_versatility/acq_ei/temp140_ei_versatility/results/gp_predictions_iter04.png
+
+--- Iteration 5/8 ---
+  Top 5 suggestions (EI):
+    1. HDPE (acq=0.0219, μ=0.537, σ=0.149)
+    2. LDPE (acq=0.0219, μ=0.537, σ=0.149)
+    3. PS (acq=0.0174, μ=0.425, σ=0.212)
+  ✓ Tested: HDPE → score = 1.000
+  Current best: HDPE (1.000)
+
+--- Iteration 6/8 ---
+  Top 5 suggestions (EI):
+    1. PS (acq=0.0053, μ=0.483, σ=0.306)
+    2. LDPE (acq=0.0000, μ=1.000, σ=0.001)
+  ✓ Tested: PS → score = 0.675
+  Current best: HDPE (1.000)
+[OK] Saved: al_sweep_results/temp_140C/method_versatility/acq_ei/temp140_ei_versatility/results/gp_predictions_iter06.png
+
+--- Iteration 7/8 ---
+  Top 5 suggestions (EI):
+    1. LDPE (acq=0.0000, μ=1.000, σ=0.001)
+  ✓ Tested: LDPE → score = 0.986
+  Current best: HDPE (1.000)
+
+--- Iteration 8/8 ---
+[WARN] All polymers have been tested!
+  All polymers tested!
+
+======================================================================
+CAMPAIGN COMPLETE
+======================================================================
+Best found: HDPE (1.000)
+True best:  HDPE (1.000)
+Efficiency: Found rank 1 / 9
+[OK] Saved: al_sweep_results/temp_140C/method_versatility/acq_ei/temp140_ei_versatility/results/learning_curve.png
+
+Done! Check 'al_sweep_results/temp_140C/method_versatility/acq_ei/temp140_ei_versatility/results/' for results.

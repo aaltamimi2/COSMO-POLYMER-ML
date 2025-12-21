@@ -13,6 +13,7 @@ from typing import Dict, Iterable, List, Optional, Sequence, Tuple
 
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor
 from sklearn.linear_model import Ridge
@@ -380,3 +381,231 @@ def rank_active_learning_batch(
     scored["prediction_mean"] = mean_pred
     scored["prediction_std"] = std_pred
     return scored.sort_values("prediction_std", ascending=False).head(top_k)
+
+
+def _ensure_output_dir(path: Path) -> Path:
+    """Create an output directory if it does not exist."""
+    path.mkdir(parents=True, exist_ok=True)
+    return path
+
+
+def visualize_cv_results(cv_df: pd.DataFrame, output_dir: Path) -> Dict[str, Path]:
+    """
+    Save CSV + plots summarizing grouped CV performance.
+    """
+    paths: Dict[str, Path] = {}
+    output_dir = _ensure_output_dir(output_dir)
+
+    csv_path = output_dir / "cv_metrics.csv"
+    cv_df.to_csv(csv_path, index=False)
+    paths["csv"] = csv_path
+
+    fig, axes = plt.subplots(1, 3, figsize=(13, 4))
+    positions = np.arange(len(cv_df))
+    labels = list(cv_df["model_name"])
+
+    # MAE
+    axes[0].errorbar(
+        positions, cv_df["mae_mean"], yerr=cv_df["mae_std"], fmt="o", capsize=4
+    )
+    axes[0].set_title("MAE (log-solubility)")
+    axes[0].set_ylabel("MAE")
+    axes[0].set_xticks(positions)
+    axes[0].set_xticklabels(labels, rotation=30, ha="right")
+
+    # RMSE
+    axes[1].errorbar(
+        positions, cv_df["rmse_mean"], yerr=cv_df["rmse_std"], fmt="o", capsize=4
+    )
+    axes[1].set_title("RMSE (log-solubility)")
+    axes[1].set_ylabel("RMSE")
+    axes[1].set_xticks(positions)
+    axes[1].set_xticklabels(labels, rotation=30, ha="right")
+
+    # R2 + smoothness overlay
+    ax3 = axes[2]
+    ax3.errorbar(
+        positions, cv_df["r2_mean"], yerr=cv_df["r2_std"], fmt="o", color="C0", capsize=4
+    )
+    ax3.set_ylabel("R2", color="C0")
+    ax3.tick_params(axis="y", labelcolor="C0")
+    ax3.set_xticks(positions)
+    ax3.set_xticklabels(labels, rotation=30, ha="right")
+    ax3.set_title("R2 and smoothness")
+
+    ax4 = ax3.twinx()
+    ax4.errorbar(
+        positions,
+        cv_df["smoothness_mean"],
+        yerr=cv_df["smoothness_std"],
+        fmt="s",
+        color="C3",
+        capsize=4,
+    )
+    ax4.set_ylabel("Smoothness penalty (abs 2nd diff)", color="C3")
+    ax4.tick_params(axis="y", labelcolor="C3")
+
+    fig.tight_layout()
+    fig_path = output_dir / "cv_metrics.png"
+    fig.savefig(fig_path, dpi=200, bbox_inches="tight")
+    plt.close(fig)
+    paths["fig"] = fig_path
+
+    # Additional view: stacked bars for MAE/RMSE and smoothness violin-like proxy
+    fig2, axes2 = plt.subplots(1, 2, figsize=(12, 4))
+    width = 0.35
+    axes2[0].bar(positions - width / 2, cv_df["mae_mean"], width, label="MAE", color="C0")
+    axes2[0].bar(positions + width / 2, cv_df["rmse_mean"], width, label="RMSE", color="C1")
+    axes2[0].set_xticks(positions)
+    axes2[0].set_xticklabels(labels, rotation=30, ha="right")
+    axes2[0].set_ylabel("Error (log-solubility)")
+    axes2[0].set_title("MAE vs RMSE")
+    axes2[0].legend()
+
+    axes2[1].bar(positions, cv_df["smoothness_mean"], yerr=cv_df["smoothness_std"], color="C3", capsize=4)
+    axes2[1].set_xticks(positions)
+    axes2[1].set_xticklabels(labels, rotation=30, ha="right")
+    axes2[1].set_ylabel("Smoothness penalty (abs 2nd diff)")
+    axes2[1].set_title("Curve smoothness by model")
+
+    fig2.tight_layout()
+    fig2_path = output_dir / "cv_metrics_ext.png"
+    fig2.savefig(fig2_path, dpi=200, bbox_inches="tight")
+    plt.close(fig2)
+    paths["fig_ext"] = fig2_path
+
+    return paths
+
+
+def visualize_active_learning(
+    ranking_df: pd.DataFrame,
+    output_dir: Path,
+    top_k: int = 20,
+    score_col: str = "prediction_std",
+) -> Dict[str, Path]:
+    """
+    Save CSV + plots for active-learning candidate ranking.
+    """
+    paths: Dict[str, Path] = {}
+    output_dir = _ensure_output_dir(output_dir)
+
+    ranking_df.to_csv(output_dir / "active_learning_ranking.csv", index=False)
+    paths["csv"] = output_dir / "active_learning_ranking.csv"
+
+    head = ranking_df.head(top_k)
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.barh(
+        range(len(head)),
+        head[score_col],
+        color="C1",
+    )
+    ax.set_yticks(range(len(head)))
+    labels = (
+        head["polymer"].astype(str)
+        + " | "
+        + head["solvent"].astype(str)
+        + " @ "
+        + head["temperature_c"].round(1).astype(str)
+        + "C"
+    )
+    ax.set_yticklabels(labels)
+    ax.invert_yaxis()
+    ax.set_xlabel("Ensemble std (uncertainty)")
+    ax.set_title("Top candidate points by uncertainty")
+    fig.tight_layout()
+
+    fig_path = output_dir / "active_learning_ranking.png"
+    fig.savefig(fig_path, dpi=200, bbox_inches="tight")
+    plt.close(fig)
+    paths["fig"] = fig_path
+
+    # Scatter of uncertainty vs. temperature to highlight hot/cold regions
+    fig2, ax2 = plt.subplots(figsize=(8, 4))
+    scatter = ax2.scatter(
+        ranking_df["temperature_c"],
+        ranking_df[score_col],
+        c=ranking_df["prediction_mean"],
+        cmap="viridis",
+        alpha=0.6,
+    )
+    cbar = fig2.colorbar(scatter, ax=ax2)
+    cbar.set_label("Predicted log-solubility")
+    ax2.set_xlabel("Temperature (°C)")
+    ax2.set_ylabel("Ensemble std (uncertainty)")
+    ax2.set_title("Uncertainty vs temperature (all candidates)")
+    fig2.tight_layout()
+    fig2_path = output_dir / "active_learning_uncertainty_vs_temperature.png"
+    fig2.savefig(fig2_path, dpi=200, bbox_inches="tight")
+    plt.close(fig2)
+    paths["fig_uncertainty_temp"] = fig2_path
+
+    # Per-polymer uncertainty distribution (top K focus)
+    fig3, ax3 = plt.subplots(figsize=(8, 4))
+    topk = ranking_df.head(top_k)
+    ax3.bar(
+        topk["polymer"],
+        topk[score_col],
+        color="C2",
+    )
+    ax3.set_ylabel("Ensemble std (uncertainty)")
+    ax3.set_title(f"Top {top_k} uncertainty by polymer")
+    ax3.set_xticklabels(topk["polymer"], rotation=30, ha="right")
+    fig3.tight_layout()
+    fig3_path = output_dir / "active_learning_topk_by_polymer.png"
+    fig3.savefig(fig3_path, dpi=200, bbox_inches="tight")
+    plt.close(fig3)
+    paths["fig_topk_polymer"] = fig3_path
+    return paths
+
+
+def run_common_solvent_cv_and_visualize(
+    data_dir: Path,
+    output_dir: Path = Path("results/common-solvents/cv"),
+    model_types: Iterable[str] = ("ridge", "gbr", "rf"),
+    n_splits: int = 3,
+    random_state: int = 0,
+    **preprocess_kwargs,
+) -> Tuple[pd.DataFrame, Dict[str, Path]]:
+    """
+    Convenience wrapper: load data, run grouped CV, save CSV + plots.
+    """
+    data = load_common_solvent_directory(data_dir)
+    cv_df = evaluate_models(
+        data,
+        model_types=model_types,
+        n_splits=n_splits,
+        random_state=random_state,
+        **preprocess_kwargs,
+    )
+    paths = visualize_cv_results(cv_df, output_dir)
+    return cv_df, paths
+
+
+def run_common_solvent_active_learning(
+    data_dir: Path,
+    output_dir: Path = Path("results/common-solvents/active_learning"),
+    n_members: int = 5,
+    model_type: str = "gbr",
+    top_k: int = 20,
+    random_state: int = 0,
+    candidate_df: Optional[pd.DataFrame] = None,
+    **preprocess_kwargs,
+) -> Tuple[pd.DataFrame, Dict[str, Path]]:
+    """
+    Train an ensemble, score candidates, and save ranking CSV + plots.
+    """
+    data = load_common_solvent_directory(data_dir)
+    ensemble = fit_ensemble(
+        data,
+        n_members=n_members,
+        model_type=model_type,
+        random_state=random_state,
+        **preprocess_kwargs,
+    )
+
+    if candidate_df is None:
+        candidate_df = data.drop(columns=["log_solubility"])
+
+    ranking = rank_active_learning_batch(ensemble, candidate_df, top_k=top_k)
+    paths = visualize_active_learning(ranking, output_dir, top_k=top_k)
+    return ranking, paths

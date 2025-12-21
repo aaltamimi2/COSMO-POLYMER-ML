@@ -85,28 +85,22 @@ those CSVs with the new utilities in `src/models/common_solvent_model.py`:
 python - <<'PY'
 from pathlib import Path
 from src.models.common_solvent_model import (
-    run_common_solvent_active_learning,
-    run_common_solvent_cv_and_visualize,
+    evaluate_models,
+    fit_ensemble,
+    load_common_solvent_directory,
+    rank_active_learning_batch,
 )
 
-data_dir = Path("data/common-solvents")
+data = load_common_solvent_directory(Path("data/common-solvents"))
+print("Dataset shape:", data.shape)
 
-# 1) Grouped CV holding out entire polymers (saves CSV + figure to results/common-solvents/cv)
-cv_df, cv_paths = run_common_solvent_cv_and_visualize(
-    data_dir,
-    model_types=("ridge", "gbr", "rf"),
-    n_splits=3,
-)
-print("CV metrics saved to:", cv_paths)
+# Grouped CV that holds out entire polymers (tests new-polymer generalization)
+print(evaluate_models(data, model_types=("ridge", "gbr", "rf")))
 
-# 2) Train an ensemble and rank candidate experiments (CSV + figure to results/common-solvents/active_learning)
-ranking_df, al_paths = run_common_solvent_active_learning(
-    data_dir,
-    n_members=5,
-    model_type="gbr",
-    top_k=10,
-)
-print("Active-learning ranking saved to:", al_paths)
+# Train an ensemble for active learning uncertainty
+ensemble = fit_ensemble(data, n_members=5, model_type="gbr")
+candidates = data.sample(20, random_state=0).drop(columns=["log_solubility"])
+print(rank_active_learning_batch(ensemble, candidates, top_k=5))
 PY
 ```
 

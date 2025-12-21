@@ -75,6 +75,35 @@ python predict_new_polymer.py \
 
 See [notebooks/README_MODELING.md](notebooks/README_MODELING.md) for complete modeling workflow.
 
+### Quick Start: Model the common-solvents CSVs
+
+The `data/common-solvents` folder contains solubility–temperature curves on a
+5 °C grid for multiple polymers. You can train and score a model directly from
+those CSVs with the new utilities in `src/models/common_solvent_model.py`:
+
+```bash
+python - <<'PY'
+from pathlib import Path
+from src.models.common_solvent_model import (
+    evaluate_models,
+    fit_ensemble,
+    load_common_solvent_directory,
+    rank_active_learning_batch,
+)
+
+data = load_common_solvent_directory(Path("data/common-solvents"))
+print("Dataset shape:", data.shape)
+
+# Grouped CV that holds out entire polymers (tests new-polymer generalization)
+print(evaluate_models(data, model_types=("ridge", "gbr", "rf")))
+
+# Train an ensemble for active learning uncertainty
+ensemble = fit_ensemble(data, n_members=5, model_type="gbr")
+candidates = data.sample(20, random_state=0).drop(columns=["log_solubility"])
+print(rank_active_learning_batch(ensemble, candidates, top_k=5))
+PY
+```
+
 ## Workflow
 
 1. **Data Comparison** (`analyze_evoh.py`): Compare REF vs SLE for polymers with experimental data
